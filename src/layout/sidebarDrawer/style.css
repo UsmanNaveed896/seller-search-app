@@ -1,0 +1,7 @@
+::-webkit-scrollbar {
+    width: 1px; /* Set the width of the scroll bar */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #757575; /* Set the color of the scroll bar thumb */
+  }
