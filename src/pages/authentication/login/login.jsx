@@ -12,24 +12,8 @@ const Login = () => {
   } = useForm();
  
 
-  const handleBotApi = async () => {
-    try {
-      let payLoad = {
-        email: "admin@gmail.com",
-        password: "12345678"
-      };
-  
-      const response = await axios.post("/api/v1/users/login", payLoad);
-  
-      const data = response.data;
-      console.log(data, "data");
-      // setBot(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
   const onSubmit = (data) => {
-    console.log(data,"data")
     registerHook.handleLogin(data);
   };
   const shadow =
@@ -86,10 +70,9 @@ const Login = () => {
 
                 <button
                   className="bg-gradient-to-b from-blue-500 to-indigo-600 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-                  // type="submit"
-                  onClick={handleBotApi}
+                  type="submit"
                 >
-                  Login
+                 {registerHook.loading ? "...Loading" : "Login"} 
                 </button>
               </div>
             </div>
