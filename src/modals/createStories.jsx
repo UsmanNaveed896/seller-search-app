@@ -15,7 +15,7 @@ export function CreateStories({ handleOpen, setOpen, open }) {
       reader.readAsDataURL(file);
     }
   };
-  console.log(selectedImage,"selected")
+
   const handleContentChange = (event) => {
     setStoryContent(event.target.value);
   };

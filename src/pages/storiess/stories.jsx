@@ -12,24 +12,24 @@ const Stories = () => {
     <div className="flex justify-center">
       <div className="container max-w-[1000px]">
         <div className="images flex gap-6 mt-12">
-          <div className="img relative" onClick={handleOpen}>
+          <div className="img relative cursor-pointer" onClick={handleOpen}>
             <img src={Img} alt="rectangle" />
             <div className="bg-[#1FA1FF] rounded-full h-6 w-6 text-white text-center absolute bottom-3 left-3">
               <span className="pt-[-6px] font-bold">+</span>
             </div>
           </div>
-          <div className="img relative">
+          {/* <div className="img relative">
             <img src={Img1} alt="rectangle" />
             <div className="bg-[#1FA1FF] rounded-full h-6 w-6 text-white text-center absolute bottom-3 left-3">
               <span className="pt-[-6px] font-bold">+</span>
             </div>
-          </div>
-          <div className="img relative">
+          </div> */}
+          {/* <div className="img relative">
             <img src={Img2} alt="rectangle" />
             <div className="bg-[#1FA1FF] rounded-full h-6 w-6 text-white text-center absolute bottom-3 left-3">
               <span className="pt-[-6px] font-bold">+</span>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="mt-16">
           <div className="flex justify-between w-[35%] mb-3">
