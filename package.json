@@ -32,7 +32,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy":"https://searchapp.ai",
+
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -51,7 +51,10 @@
       "last 1 safari version"
     ]
   },
+ 
+  "proxy":"https://searchapp.ai",
   "devDependencies": {
     "tailwindcss": "^3.4.3"
   }
+  
 }

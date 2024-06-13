@@ -7,11 +7,10 @@ import axios from "axios";
 export const useCreateVirtualOffice = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  let token = localStorage.getItem("token");
 
   const handleCreateVirtualOffice = (data) => {
     setLoading(true);
-    let token = localStorage.getItem("token");
-
     let headers = {
       Authorization: `Bearer ` + token,
     };
@@ -48,6 +47,12 @@ export const useCreateVirtualOffice = () => {
         toast.error(err?.message);
       });
   };
+
+  const getAllVirtualOffice =()=>{
+    setLoading(true);
+
+    axios.get()
+  }
 
   return {
     handleCreateVirtualOffice,

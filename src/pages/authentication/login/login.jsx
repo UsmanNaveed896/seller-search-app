@@ -72,7 +72,7 @@ const Login = () => {
                   className="bg-gradient-to-b from-blue-500 to-indigo-600 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
                   type="submit"
                 >
-                 {registerHook.loading ? "...Loading" : "Login"} 
+                 {registerHook.loading ? "Loading..." : "Login"} 
                 </button>
               </div>
             </div>

@@ -38,8 +38,8 @@ const AddPosting = () => {
                     >
                         <div className="column1 px-6 py-2">
                             <h1 className='text-[#252B5C] font-semibold '>Ad Post Title</h1>
-                            <div className="mt-4 rounded-xl flex justify-between px-6 py-6 bg-[#F5F4F8]">
-                                <p>Schoolview House</p>
+                            <div className="mt-4 rounded-xl flex justify-between px-6 py-6 bg-[#F5F4F8] items-center">
+                                <input className='p-2 bg-white rounded' placeholder='Schoolview House'/>
                                 <div>
                                     <img src={Img} alt='abc' />
                                 </div>
