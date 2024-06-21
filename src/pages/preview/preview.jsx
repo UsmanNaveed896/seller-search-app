@@ -10,11 +10,12 @@ import Img7 from "../../assets/Rectangle 22.png";
 import Img8 from "../../assets/Group 48095826.png";
 import Img9 from "../../assets/Group.png";
 import Img10 from "../../assets/Layout.png";
-
+import LiveStream from "../../components/livestream/livestream";
 // import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 // import { Carousel } from 'react-responsive-carousel';
 import MultiCarousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import ClientLiveStream from "../../components/livestream/livestreamwebsocket";
 const Preview = () => {
   const responsive = {
     desktop: {
@@ -182,12 +183,12 @@ const Preview = () => {
           >
             <div className="flex justify-between  mb-3">
               <p className="font-bold text-[12px]">Live</p>
-              <p className="text-[#1B8693] text-[12px] font-semibold">
-                View All
-              </p>
+          
             </div>
             <div className="flex justify-center">
-              <img src={Img8} alt="abc" />
+              {/* <img src={Img8} alt="abc" /> */}
+              <LiveStream/>
+              {/* <ClientLiveStream/> */}
             </div>
 
             <div className="">

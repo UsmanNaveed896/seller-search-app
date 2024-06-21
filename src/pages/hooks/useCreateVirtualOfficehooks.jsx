@@ -14,45 +14,42 @@ export const useCreateVirtualOffice = () => {
     let headers = {
       Authorization: `Bearer ` + token,
     };
+
     const payLoad = {
+      country: "USA",
+      category: "Technology",
       companyName: data?.companyName,
       businessEmail: data?.businessEmail,
-      license:data?.license,
-      companyAddress:data?.companyAddress,
-      governmentID:data?.governmentID,
-      idCard:data?.idCard,
-      type:data?.type[0]
+      license: data?.license,
+      companyAddress: data?.companyAddress,
+      governmentID: data?.governmentID,
+      idCard: data?.idCard,
+      type: data?.type[0],
     };
 
     axios
-      .post("/api/v1/virtualoffices", payLoad, {headers})
+      .post(
+        "https://cors-anywhere.herokuapp.com/https://searchapp.ai/api/v1/virtualoffices",
+        payLoad,
+        { headers }
+      )
       .then((res) => {
-        if (res?.status == 200) {
+        setLoading(false); // Reset loading state here as well
+        if (res?.status === 200) {
           console.log(res, "response");
-          toast.success(res?.data?.status || "");
-          const token = res?.data?.token;
-          const userid = res?.data?.data?.user?._id;
-          localStorage.setItem("token", token);
-          localStorage.setItem("userid", userid);
-          setLoading(false);
-          navigate("/profile");
+          toast.success("Virtual Office Created Successfully!");
         } else {
-          toast.error(res?.message);
-          setLoading(false);
+          toast.error(res?.data?.message || "An error occurred"); // Improved error message handling
         }
       })
       .catch((err) => {
         setLoading(false);
-        console.log("err", err);
-        toast.error(err?.message);
+        console.error(err); // Log the error to the console for debugging
+        toast.error(
+          err?.response?.data?.message || err.message || "An error occurred"
+        );
       });
   };
-
-  const getAllVirtualOffice =()=>{
-    setLoading(true);
-
-    axios.get()
-  }
 
   return {
     handleCreateVirtualOffice,

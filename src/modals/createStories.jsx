@@ -1,18 +1,26 @@
 import React, { useState } from "react";
-
 import Img from "../assets/photo.png";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 export function CreateStories({ handleOpen, setOpen, open }) {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileUrl, setFileUrl] = useState();
   const [storyContent, setStoryContent] = useState("");
-  const handleImageUpload = (event) => {
+  const [isVideo, setIsVideo] = useState(false);
+
+  const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const fileType = file.type.startsWith('video/') ? 'video' : 'image';
+      setIsVideo(fileType === 'video');
+      
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result);
+        setSelectedFile(reader.result);
       };
       reader.readAsDataURL(file);
+      setFileUrl(URL.createObjectURL(file));
     }
   };
 
@@ -25,17 +33,33 @@ export function CreateStories({ handleOpen, setOpen, open }) {
     let userId = localStorage.getItem("userid");
 
     let headers = {
-      Authorization: `Bearer ` + token,
+      Authorization: `Bearer ${token}`,
     };
+
     let payLoad = {
       content: storyContent,
-      photo: selectedImage,
+      media: fileUrl,
       user: userId,
     };
-    axios.post("/api/v1/users/stories", payLoad, { headers }).then((res) => {
-      console.log(res,"respose");
-    });
+
+    axios
+      .post(
+        "https://cors-anywhere.herokuapp.com/https://searchapp.ai/api/v1/stories",
+        payLoad,
+        { headers }
+      )
+      .then((res) => {
+        console.log(res, "response");
+        toast.success("Story created successfully!");
+        handleOpen()
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to create story.");
+      });
   };
+
+  console.log(fileUrl, "file URL");
   return (
     <>
       <div>
@@ -70,18 +94,28 @@ export function CreateStories({ handleOpen, setOpen, open }) {
                         <div className="flex justify-center">
                           <div>
                             <label htmlFor="fileInput">
-                              <img
-                                src={selectedImage || Img}
-                                alt="story"
-                                className="cursor-pointer h-12"
-                              />
+                              {isVideo ? (
+                                <video
+                                  src={fileUrl || Img}
+                                  alt="story"
+                                  className="cursor-pointer h-[150px]"
+                                  controls
+                                />
+                              ) : (
+                                <img
+                                  src={fileUrl || Img}
+                                  alt="story"
+                                  className="cursor-pointer h-12"
+                                />
+                              )}
                             </label>
                             <input
+                           
                               id="fileInput"
                               type="file"
-                              accept="image/*"
+                              accept="image/*,video/*"
                               style={{ display: "none" }}
-                              onChange={handleImageUpload}
+                              onChange={handleFileUpload}
                             />
                           </div>
                         </div>

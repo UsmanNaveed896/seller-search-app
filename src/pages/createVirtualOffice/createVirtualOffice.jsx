@@ -10,6 +10,7 @@ const CreateVirtualOffice = () => {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = useForm();
   const shadow =
@@ -19,9 +20,12 @@ const CreateVirtualOffice = () => {
     setValue("type", value === watch("type") ? null : value); // Deselect if already selected
   };
   const onSubmit = (data) => {
-    createVirtualOfficeHook.handleCreateVirtualOffice(data)
-    console.log(data, "data");
+    createVirtualOfficeHook.handleCreateVirtualOffice(data).then(() => {
+      reset();
+    });
+   
   };
+  console.log(createVirtualOfficeHook.loading, "loading");
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,8 +79,8 @@ const CreateVirtualOffice = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4 mt-6">
-              <div
+            <div className="grid grid-cols-1  mt-6">
+              {/* <div
                 className="column1 rounded-xl  px-6 py-2"
                 style={{ boxShadow: shadow }}
               >
@@ -140,7 +144,7 @@ const CreateVirtualOffice = () => {
                     Choose Category
                   </button>
                 </div>
-              </div>
+              </div> */}
               <div
                 className="column2 rounded-xl  px-6 py-2"
                 style={{ boxShadow: shadow }}

@@ -7,6 +7,7 @@ import axios from "axios";
 export const useRegisterHook = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [loginResponse,setLoginResponse]=useState()
 
   const handleLogin = (data) => {
     setLoading(true);
@@ -16,17 +17,17 @@ export const useRegisterHook = () => {
     };
 
     axios
-      .post("/api/v1/users/login", payLoad)
+      .post("https://cors-anywhere.herokuapp.com/https://searchapp.ai/api/v1/users/login", payLoad)
       .then((res) => {
         if (res?.status == 200) {
           console.log(res, "response");
-          toast.success(res?.data?.status || "");
+          toast.success("Logged In Successfully");
           const token = res?.data?.token;
           const userid = res?.data?.data?.user?._id;
           localStorage.setItem("token", token);
-          localStorage.setItem("userid", userid);
+          localStorage.setItem("user_id", userid);
           setLoading(false);
-          navigate("/profile");
+          navigate("/dashboard");
         } else {
           toast.error(res?.message);
           setLoading(false);
@@ -35,12 +36,13 @@ export const useRegisterHook = () => {
       .catch((err) => {
         setLoading(false);
         console.log("err", err);
-        toast.error(err?.message);
+        toast.error(err?.response?.data?.message);
       });
   };
 
   return {
     handleLogin,
     loading,
+    loginResponse
   };
 };

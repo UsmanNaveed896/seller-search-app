@@ -16,6 +16,7 @@ const Login = () => {
   const onSubmit = (data) => {
     registerHook.handleLogin(data);
   };
+  console.log(registerHook?.loginResponse,"login")
   const shadow =
     "box-shadow: 4px 4px 15px 0px #C3C3C3 inset, -6px -4px 15px 0px #FFF inset;";
   return (

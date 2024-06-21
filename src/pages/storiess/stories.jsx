@@ -14,8 +14,8 @@ const Stories = () => {
         <div className="images flex gap-6 mt-12">
           <div className="img relative cursor-pointer" onClick={handleOpen}>
             <img src={Img} alt="rectangle" />
-            <div className="bg-[#1FA1FF] rounded-full h-6 w-6 text-white text-center absolute bottom-3 left-3">
-              <span className="pt-[-6px] font-bold">+</span>
+            <div className="bg-[#1FA1FF] rounded-full hover:text-[20px] h-6 w-6 hover:h-8 hover:w-8 text-white text-center absolute bottom-3 left-3">
+              <span className="pt-[-6px] font-bold ">+</span>
             </div>
           </div>
           {/* <div className="img relative">
