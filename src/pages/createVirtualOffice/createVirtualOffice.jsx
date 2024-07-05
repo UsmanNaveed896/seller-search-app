@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Img from "../../assets/Button.png";
 import Img1 from "../../assets/Group 48095764.png";
 import { useForm } from "react-hook-form";
@@ -17,15 +17,31 @@ const CreateVirtualOffice = () => {
     "4px 4px 4px 0px rgba(0, 0, 0, 0.25), -1px 4px 6.3px 0px rgba(255, 255, 255, 0.50), 0px -2px 4px 0px rgba(0, 0, 0, 0.25)";
   const createVirtualOfficeHook = useCreateVirtualOffice();
   const handleChange = (value) => {
-    setValue("type", value === watch("type") ? null : value); // Deselect if already selected
+    setValue("type", value === watch("type") ? null : value); 
+  };
+  const [selectedImage, setSelectedImage] = useState(null);
+  const handleImageClick = () => {
+    setSelectedImage(null);
+    document.getElementById('logo').value = null;
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file));
+      setValue("logo", URL.createObjectURL(file));
+    }
   };
   const onSubmit = (data) => {
+    
+    const formData = new FormData();
+    formData.append("logo", data.logo[0]);
+    console.log(data, "data");
     createVirtualOfficeHook.handleCreateVirtualOffice(data).then(() => {
       reset();
     });
-   
+    setSelectedImage(null)
   };
-  console.log(createVirtualOfficeHook.loading, "loading");
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -35,6 +51,29 @@ const CreateVirtualOffice = () => {
               className="rounded-xl flex justify-center"
               style={{ boxShadow: shadow }}
             >
+              <div className="h-[190px] w-[190px] rounded-full bg-[#C4C4C4] p-4 m-3">
+                {selectedImage ? (
+                  <img
+                    src={selectedImage}
+                    alt="Selected logo"
+                    className="h-full w-full rounded-full object-cover"
+                    onClick={handleImageClick}
+                  />
+                ) : (
+                  <label htmlFor="logo" className="cursor-pointer">
+                    <p className="text-[18px] text-black pt-16 text-center font-semibold">
+                      Upload Your logo
+                    </p>
+                  </label>
+                )}
+                <input
+                  type="file"
+                  {...register("logo", )}
+                  className="hidden"
+                  id="logo"
+                  onChange={handleImageChange}
+                />
+              </div>
               <div className="abc py-6">
                 <p className="mb-6 text-center text-[#616161] font-bold">
                   Select Type

@@ -10,27 +10,28 @@ export function CreateStories({ handleOpen, setOpen, open }) {
   const [isVideo, setIsVideo] = useState(false);
 
   const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+    var file = event.target.files[0];
     if (file) {
-      const fileType = file.type.startsWith('video/') ? 'video' : 'image';
-      setIsVideo(fileType === 'video');
-      
+      const fileType = file.type.startsWith("video/") ? "video" : "image";
+      setIsVideo(fileType === "video");
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedFile(reader.result);
+        setSelectedFile(file);
       };
       reader.readAsDataURL(file);
       setFileUrl(URL.createObjectURL(file));
     }
   };
 
+  console.log(fileUrl,"selected")
   const handleContentChange = (event) => {
     setStoryContent(event.target.value);
   };
 
   const createStories = () => {
     let token = localStorage.getItem("token");
-    let userId = localStorage.getItem("userid");
+    let userId = localStorage.getItem("user_id");
 
     let headers = {
       Authorization: `Bearer ${token}`,
@@ -38,10 +39,9 @@ export function CreateStories({ handleOpen, setOpen, open }) {
 
     let payLoad = {
       content: storyContent,
-      media: fileUrl,
       user: userId,
+      media: selectedFile,
     };
-
     axios
       .post(
         "https://cors-anywhere.herokuapp.com/https://searchapp.ai/api/v1/stories",
@@ -51,7 +51,7 @@ export function CreateStories({ handleOpen, setOpen, open }) {
       .then((res) => {
         console.log(res, "response");
         toast.success("Story created successfully!");
-        handleOpen()
+        handleOpen();
       })
       .catch((err) => {
         console.error(err);
@@ -59,7 +59,6 @@ export function CreateStories({ handleOpen, setOpen, open }) {
       });
   };
 
-  console.log(fileUrl, "file URL");
   return (
     <>
       <div>
@@ -110,7 +109,6 @@ export function CreateStories({ handleOpen, setOpen, open }) {
                               )}
                             </label>
                             <input
-                           
                               id="fileInput"
                               type="file"
                               accept="image/*,video/*"

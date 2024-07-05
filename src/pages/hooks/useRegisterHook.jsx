@@ -17,7 +17,7 @@ export const useRegisterHook = () => {
     };
 
     axios
-      .post("https://cors-anywhere.herokuapp.com/https://searchapp.ai/api/v1/users/login", payLoad)
+      .post("https://searchapi.codematesolution.com/api/v1/users/login", payLoad)
       .then((res) => {
         if (res?.status == 200) {
           console.log(res, "response");
@@ -27,7 +27,7 @@ export const useRegisterHook = () => {
           localStorage.setItem("token", token);
           localStorage.setItem("user_id", userid);
           setLoading(false);
-          navigate("/dashboard");
+          navigate("/profile");
         } else {
           toast.error(res?.message);
           setLoading(false);

@@ -7,7 +7,7 @@ const ClientLiveStream = () => {
   const [sourceBuffer, setSourceBuffer] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:2020');
+    const ws = new WebSocket('ws://localhost:7800');
     setSocket(ws);
 
     ws.onopen = () => {

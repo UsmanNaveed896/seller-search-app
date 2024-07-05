@@ -6,7 +6,7 @@ const Chats = () => {
         <>
             <div class="flex flex-1 pt-3 grid grid-cols-3 gap-1 overflow-hidden">
                 <div class="">
-                    <div class="h-full w-full bg-[#FDFDFF] p-3 rounded-lg border ">
+                    <div class="h-full w-full bg-[#FDFDFF] text-black p-3 rounded-lg border ">
                         <p className='mb-3 font-bold text-[16px]'>Messages</p>
                         <div class=" relative mb-4 flex w-full items-center gap-2   py-2 ">
                             <div className=''>
@@ -23,7 +23,7 @@ const Chats = () => {
                             </div>
                         </div>
                         <div className='contact-list'>
-                            <div className='conatcts rounded-lg border flex justify-between items-center px-2 py-3 cursor-pointer hover:shadow mb-2'>
+                            <div className='conatcts rounded-lg border  flex justify-between items-center px-2 py-3 cursor-pointer hover:shadow mb-2'>
                                 <div className=''>
                                     <img src={Img2} alt='avatar' />
                                 </div>
@@ -91,14 +91,14 @@ const Chats = () => {
                                                     Welcome to group everyone !
                                                 </div>
                                                 <img
-                                                    src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                                                    src={Img2}
                                                     class="object-cover h-8 w-8 rounded-full"
                                                     alt=""
                                                 />
                                             </div>
                                             <div class="flex justify-start mb-4">
                                                 <img
-                                                    src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                                                    src={Img2}
                                                     class="object-cover h-8 w-8 rounded-full"
                                                     alt=""
                                                 />
@@ -113,7 +113,7 @@ const Chats = () => {
                                             </div>
                                             <div class="flex justify-start mb-4">
                                                 <img
-                                                    src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                                                    src={Img2}
                                                     class="object-cover h-8 w-8 rounded-full"
                                                     alt=""
                                                 />
@@ -143,7 +143,7 @@ const Chats = () => {
                                                     </div>
                                                 </div>
                                                 <img
-                                                    src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                                                    src={Img2}
                                                     class="object-cover h-8 w-8 rounded-full"
                                                     alt=""
                                                 />
