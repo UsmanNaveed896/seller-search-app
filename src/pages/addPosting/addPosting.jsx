@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleMaps from "../../components/googleMap/googleMap";
 import { useForm, Controller } from "react-hook-form";
-import { usePostAd } from "../hooks/usePostAdHook";
+import { usePostAd } from  "../hooks/usePostAdHook";
 const AddPosting = () => {
   const adPostHook=usePostAd();
   const shadow =
