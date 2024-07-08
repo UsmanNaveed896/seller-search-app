@@ -10,7 +10,7 @@ import Img5 from '../../assets/images-black-1/civic-5.jpg'
 import Img6 from '../../assets/images-black-1/civic-6.jpg'
 import Img7 from '../../assets/images-black-1/civic-7.jpg'
 import Img8 from '../../assets/images-black-1/civic-8.jpg'
-const Productview = ({ selectImage }) => {
+const Productview = ({ selectImage,setView360 }) => {
 
   const carList = [
     {
@@ -53,6 +53,7 @@ const Productview = ({ selectImage }) => {
   return (
     <>
       <div className='flex justify-center'>
+        <div className='relative'>
         <ReactImageTurntable
           movementSensitivity={1}
           images={imageUrls}
@@ -61,6 +62,9 @@ const Productview = ({ selectImage }) => {
           onPointerDown={() => setRotationDisabled(true)}
           onPointerUp={() => setRotationDisabled(false)}
         />
+        <i className='fa fa-close text-black absolute top-0 right-0 p-3 cursor-pointer' onClick={()=>setView360(false)}></i>
+        </div>
+      
       </div>
     </>
 

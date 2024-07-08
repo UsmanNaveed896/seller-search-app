@@ -6,15 +6,17 @@ import Img8 from "../../assets/Union.png";
 
 import "./style.css";
 
-import { Link, } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Outlet } from "react-router-dom";
 
 const Drawer = () => {
+  const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(true);
 
   const [selectedLink, setSelectedLink] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showAdDropDown, setShowAdDropdown] = useState(false);
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -23,9 +25,15 @@ const Drawer = () => {
     setSelectedLink(link);
     if (link == "virtualoffice") {
       setShowDropdown(!showDropdown);
+    } else if (link == "adposting") {
+      setShowAdDropdown(!showAdDropDown);
     }
   };
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
+    navigate("/login");
+  };
   return (
     <>
       <div className={`flex h-screen ${drawerOpen ? "overflow-y-scroll" : ""}`}>
@@ -82,23 +90,52 @@ const Drawer = () => {
                   </div>
                 </li>
               </Link>
-              <Link to="/adposting">
-                <li
-                  className={`cursor-pointer  ${
-                    selectedLink === "adposting" ? "font-bold" : ""
-                  } ${
-                    selectedLink === "adposting"
-                      ? "text-black"
-                      : "text-[#757575]"
-                  }  mb-4`}
-                  onClick={() => handlePageSwitch("adposting")}
-                >
-                  <div className="flex justify-start items-center gap-4">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    <h1 className=" text-[16px]">Ad Posting</h1>
-                  </div>
-                </li>
-              </Link>
+           
+
+              <li
+                className={`cursor-pointer  ${
+                  selectedLink === "adposting" ? "font-bold" : ""
+                } ${
+                  selectedLink === "adposting" ? "text-black" : "text-[#757575]"
+                }  mb-4`}
+                onClick={() => handlePageSwitch("adposting")}
+              >
+                  <div className="flex justify-between items-center">
+                <div className="flex justify-start items-center gap-4">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <h1 className=" text-[16px]">Ad Posting</h1>
+                </div>
+                {showAdDropDown ? (
+                      <i className="fa fa-angle-up" />
+                    ) : (
+                      <i className="fa fa-angle-down" />
+                    )}
+                    </div>
+              </li>
+
+              {showAdDropDown && (
+                <>
+                  <Link to="/adposting">
+                    <li className="cursor-pointer text-[#757575] mb-2">
+                      <div className="flex justify-start items-center gap-4">
+                        <h1 className="text-[#757575] text-[14px] ml-7">
+                          Property Ad
+                        </h1>
+                      </div>
+                    </li>
+                  </Link>
+                  <Link to="/carad">
+                    <li className="cursor-pointer text-[#757575] mb-2">
+                      <div className="flex justify-start items-center gap-4">
+                        <h1 className="text-[#757575] text-[14px] ml-7">
+                          Car Ad
+                        </h1>
+                      </div>
+                    </li>
+                  </Link>
+                </>
+              )}
+
               <Link to="/chats">
                 <li
                   className={`cursor-pointer  ${
@@ -213,7 +250,7 @@ const Drawer = () => {
                   </div>
                 </li>
               </Link>
-              <Link to="/featureAd">
+             
                 <li
                   className={`cursor-pointer  ${
                     selectedLink === "virtualoffice" ? "font-bold" : ""
@@ -236,7 +273,7 @@ const Drawer = () => {
                     )}
                   </div>
                 </li>
-              </Link>
+            
               {showDropdown && (
                 <>
                   <Link to="/viewvirtualoffice">
@@ -284,10 +321,15 @@ const Drawer = () => {
                   <h1 className="text-[#757575] text-[16px]">Help</h1>
                 </div>
               </li>
-              <li className="cursor-pointer text-[#757575] mb-4">
+              <li className="cursor-pointer text-[#94AEFF] hover:font-bold mb-4">
                 <div className="flex justify-start items-center gap-4">
                   <img src={Img8} alt="profile" />
-                  <h1 className="text-[#D55F5A] text-[16px]">Logout Account</h1>
+                  <h1
+                    className="text-[#D55F5A] text-[16px]"
+                    onClick={handleLogout}
+                  >
+                    Logout Account
+                  </h1>
                 </div>
               </li>
             </ul>

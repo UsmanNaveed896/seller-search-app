@@ -16,6 +16,7 @@ const Login = () => {
   const onSubmit = (data) => {
     registerHook.handleLogin(data);
   };
+  console.log(registerHook?.loginResponse,"login")
   const shadow =
     "box-shadow: 4px 4px 15px 0px #C3C3C3 inset, -6px -4px 15px 0px #FFF inset;";
   return (
@@ -72,7 +73,7 @@ const Login = () => {
                   className="bg-gradient-to-b from-blue-500 to-indigo-600 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
                   type="submit"
                 >
-                 {registerHook.loading ? "...Loading" : "Login"} 
+                 {registerHook.loading ? "Loading..." : "Login"} 
                 </button>
               </div>
             </div>

@@ -14,6 +14,7 @@ import CreateVirtualOffice from "./pages/createVirtualOffice/createVirtualOffice
 import ViewVirtualOfiice from "./pages/viewVirtualOffice/viewVirtualOfiice";
 import SplashScreen from './components/splashScreen/splashScreen'
 import Layout from './layout/sidebarDrawer/sideBarDrawer'
+import CarSelling from "./pages/carSelling/carSelling";
 
 const Routesd = () => {
   const location = useLocation();
@@ -40,6 +41,8 @@ const Routesd = () => {
               <Route exact path="/profile" element={<Profile />} />
               <Route exact path="/wallet" element={<Wallet />} />
               <Route exact path="/adposting" element={<AddPosting />} />
+              <Route exact path="/carad" element={<CarSelling />} />
+
               <Route exact path="/chats" element={<Chats />} />
               <Route exact path="/notifications" element={<Notifications />} />
               <Route exact path="/stories" element={<Stories />} />
