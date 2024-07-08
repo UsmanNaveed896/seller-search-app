@@ -33,23 +33,33 @@ const CarSelling = () => {
   const images = [Img1, Img2, Img3, Img4, Img5, Img6, Img7, Img8];
   const usePostCarAd = usePostAd();
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-  const [blobUrls, setBlobUrls] = useState({});
+  const [blobUrls, setBlobUrls] = useState([]);
   const [view360, setView360] = useState(false);
 
   const handleChangeImage = (e, imageKey) => {
     const files = e.target.files;
     if (files.length > 0) {
       const file = files[0];
-      const blobUrl = URL.createObjectURL(file); // Create blob URL
-      setBlobUrls((prevUrls) => ({
-        ...prevUrls,
-        [imageKey]: blobUrl,
-      }));
-      setSelectImage((prevImages) => ({
-        ...prevImages,
-        [imageKey]: file,
-      }));
-      setValue("photos", { ...blobUrls, [imageKey]: blobUrl });
+      const blobUrl = URL.createObjectURL(file);
+
+      setSelectImage((prevImages) => {
+        const updatedImages = [...prevImages];
+        updatedImages[imageKey] = file;
+        return updatedImages;
+      });
+
+      setBlobUrls((prevUrls) => {
+        const updatedUrls = [...prevUrls];
+        updatedUrls[imageKey] = blobUrl;
+        return updatedUrls;
+      });
+
+      // Get current photos state using watch
+      const currentPhotos = watch("photos") || [];
+      const updatedPhotos = [...currentPhotos];
+      updatedPhotos[imageKey] = blobUrl;
+      
+      setValue("photos", updatedPhotos);
     }
   };
   const handleViewButton = () => {
@@ -83,6 +93,7 @@ const CarSelling = () => {
 
  
   const onSubmit = (data) => {
+    console.log(data,"data")
     usePostCarAd.handlePostCarAd(data)
   };
   console.log(selectImage, "blob");
@@ -303,42 +314,39 @@ const CarSelling = () => {
               <h1 className="text-[#252B5C] font-bold mb-2">
                 Upload Photos w.r.t to Images Below
               </h1>
-              <div className="flex items-end justify-between mt-4">
-                <div className="flex flex-wrap items-center gap-3 mt-6">
-                  {Object.keys(selectImage).map((imageKey, index) => (
-                    <div key={imageKey}>
-                      <label htmlFor={imageKey} className="cursor-pointer">
-                        {selectImage[imageKey] ? (
-                          <img
-                            className="h-32 w-32 mt-4"
-                            src={
-                              blobUrls[imageKey] ||
-                              URL.createObjectURL(selectImage[imageKey])
-                            }
-                            alt={`Selected ${imageKey}`}
-                          />
-                        ) : (
-                          <img
-                            className="h-32 w-32 mt-4"
-                            src={images[index]} // Placeholder image or initial image
-                            alt={`abc ${imageKey}`}
-                          />
-                        )}
-                      </label>
+              <div className="flex flex-wrap items-center gap-3 mt-6">
+      {selectImage.map((image, index) => (
+        <div key={index}>
+          <label htmlFor={`image-${index}`} className="cursor-pointer">
+            {image ? (
+              <img
+                className="h-32 w-32 mt-4"
+                src={
+                  blobUrls[index] ||
+                  URL.createObjectURL(image)
+                }
+                alt={`Selected ${index}`}
+              />
+            ) : (
+              <img
+                className="h-32 w-32 mt-4"
+                src={images[index]} 
+                alt={`abc ${index}`}
+              />
+            )}
+          </label>
 
-                      <input
-                        id={imageKey}
-                        accept="image/*"
-                        className="hidden"
-                        name={imageKey}
-                        type="file"
-                        onChange={(e) => handleChangeImage(e, imageKey)}
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-              </div>
+          <input
+            id={`image-${index}`}
+            accept="image/*"
+            className="hidden"
+            name={`image-${index}`}
+            type="file"
+            onChange={(e) => handleChangeImage(e, index)}
+          />
+        </div>
+      ))}
+    </div>
               <div className="flex justify-start mt-5">
                 <button
                   className="bg-gradient-to-b from-blue-400 via-blue-500 to-blue-900 text-white text-[14px] font-semibold py-3 px-12 rounded-lg focus:outline-none focus:shadow-outline"
