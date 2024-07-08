@@ -58,7 +58,7 @@ const CarSelling = () => {
       const currentPhotos = watch("photos") || [];
       const updatedPhotos = [...currentPhotos];
       updatedPhotos[imageKey] = blobUrl;
-      
+
       setValue("photos", updatedPhotos);
     }
   };
@@ -77,7 +77,7 @@ const CarSelling = () => {
     }
     if (selected.length <= 4) {
       setSelectedFeatures(selected);
-      setValue("features", selected); // update the value in the form state
+      setValue("features", selected);
     }
   };
   useEffect(() => {
@@ -91,12 +91,11 @@ const CarSelling = () => {
     setValue("features", updatedFeatures); // update the value in the form state
   };
 
- 
   const onSubmit = (data) => {
-    console.log(data,"data")
-    usePostCarAd.handlePostCarAd(data)
+    usePostCarAd.handlePostCarAd(data);
   };
-  console.log(selectImage, "blob");
+
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -129,7 +128,7 @@ const CarSelling = () => {
                         required: "Condition is required",
                       })}
                       type="radio"
-                      value="new"
+                      value="New"
                       className="form-radio h-4 w-4 text-blue-600"
                     />
                     <span className="mr-2 ml-2 text-gray-700 text-[12px] font-semibold">
@@ -142,7 +141,7 @@ const CarSelling = () => {
                         required: "Condition is required",
                       })}
                       type="radio"
-                      value="used"
+                      value="Used"
                       className="form-radio h-4 w-4 text-blue-600"
                     />
                     <span className="ml-2 text-gray-700 text-[12px] font-semibold">
@@ -194,6 +193,26 @@ const CarSelling = () => {
                   )}
                 </div>
                 <div>
+                  <h1 className="text-[#252B5C] font-bold mb-2">
+                    Transmission
+                  </h1>
+                  <select
+                    {...register("transmission", {
+                      required: "Model is required",
+                    })}
+                    className="px-6 py-3 rounded-xl bg-[#F5F4F8] text-[12px] text-[#8C9199]"
+                  >
+                    <option value="">Select Transmission</option>
+                    <option value="manual">Manual</option>
+                    <option value="automatic">Automatic</option>
+                  </select>
+                  {errors.transmission && (
+                    <p className="text-red-500 text-[12px]">
+                      {errors.transmission.message}
+                    </p>
+                  )}
+                </div>
+                <div>
                   <h1 className="text-[#252B5C] font-bold mb-2">Model</h1>
                   <select
                     {...register("model", { required: "Model is required" })}
@@ -211,6 +230,22 @@ const CarSelling = () => {
                   )}
                 </div>
 
+                <div>
+                  <h1 className="text-[#252B5C] font-bold mb-2">Mileage</h1>
+                  <input
+                    {...register("mileage", { required: "Year is required" })}
+                    className="pl-2 py-3 rounded-xl bg-[#F5F4F8] text-[12px]"
+                    placeholder="Enter Year"
+                    type="number"
+                  />
+                  {errors.mileage && (
+                    <p className="text-red-500 text-[12px]">
+                      {errors.mileage.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex justify-between mt-4">
                 <div>
                   <h1 className="text-[#252B5C] font-bold mb-2">Features</h1>
                   {selectedFeatures.length > 0 && (
@@ -238,6 +273,8 @@ const CarSelling = () => {
                     onChange={handleFeatureChange}
                     value={selectedFeatures}
                   >
+                    <option value="">Select Feature</option>
+
                     <option value="alarm">Alarm</option>
                     <option value="cruise_control">Cruise Control</option>
                     <option value="bluetooth">Bluetooth</option>
@@ -267,7 +304,7 @@ const CarSelling = () => {
                     {...register("location", {
                       required: "Location is required",
                     })}
-                    className="px-3 py-3 rounded-xl bg-[#F5F4F8] text-[12px]"
+                    className="pl-2 py-3 rounded-xl bg-[#F5F4F8] text-[12px]"
                     placeholder="Search Location"
                   />
                   {errors.location && (
@@ -315,45 +352,45 @@ const CarSelling = () => {
                 Upload Photos w.r.t to Images Below
               </h1>
               <div className="flex flex-wrap items-center gap-3 mt-6">
-      {selectImage.map((image, index) => (
-        <div key={index}>
-          <label htmlFor={`image-${index}`} className="cursor-pointer">
-            {image ? (
-              <img
-                className="h-32 w-32 mt-4"
-                src={
-                  blobUrls[index] ||
-                  URL.createObjectURL(image)
-                }
-                alt={`Selected ${index}`}
-              />
-            ) : (
-              <img
-                className="h-32 w-32 mt-4"
-                src={images[index]} 
-                alt={`abc ${index}`}
-              />
-            )}
-          </label>
+                {selectImage.map((image, index) => (
+                  <div key={index}>
+                    <label
+                      htmlFor={`image-${index}`}
+                      className="cursor-pointer"
+                    >
+                      {image ? (
+                        <img
+                          className="h-32 w-32 mt-4"
+                          src={blobUrls[index] || URL.createObjectURL(image)}
+                          alt={`Selected ${index}`}
+                        />
+                      ) : (
+                        <img
+                          className="h-32 w-32 mt-4"
+                          src={images[index]}
+                          alt={`abc ${index}`}
+                        />
+                      )}
+                    </label>
 
-          <input
-            id={`image-${index}`}
-            accept="image/*"
-            className="hidden"
-            name={`image-${index}`}
-            type="file"
-            onChange={(e) => handleChangeImage(e, index)}
-          />
-        </div>
-      ))}
-    </div>
+                    <input
+                      id={`image-${index}`}
+                      accept="image/*"
+                      className="hidden"
+                      name={`image-${index}`}
+                      type="file"
+                      onChange={(e) => handleChangeImage(e, index)}
+                    />
+                  </div>
+                ))}
+              </div>
               <div className="flex justify-start mt-5">
                 <button
                   className="bg-gradient-to-b from-blue-400 via-blue-500 to-blue-900 text-white text-[14px] font-semibold py-3 px-12 rounded-lg focus:outline-none focus:shadow-outline"
-                onClick={handleViewButton}
-                type="button"
+                  onClick={handleViewButton}
+                  type="button"
                 >
-               View 360
+                  View 360
                 </button>
               </div>
               <div className="flex justify-center mt-5">
