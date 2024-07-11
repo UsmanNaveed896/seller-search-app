@@ -90,11 +90,34 @@ const CarSelling = () => {
     setSelectedFeatures(updatedFeatures);
     setValue("features", updatedFeatures); // update the value in the form state
   };
+  let userId = localStorage.getItem("user_id");
+  const photo = "https://example.com/images/picture1.jpg";
+  const onSubmit = async (data) => {
+    const formData = new FormData();
 
-  const onSubmit = (data) => {
-    usePostCarAd.handlePostCarAd(data);
+    // Append each field to the FormData object
+    formData.append("title", data.title);
+    formData.append("condition", data.condition);
+    formData.append("year", data.year);
+    formData.append("make", data.make);
+    formData.append("transmission", data.transmission);
+    formData.append("model", data.model);
+    formData.append("mileage", data.mileage);
+    formData.append("features", data.features);
+    formData.append("location", data.location);
+    formData.append("price", data.price);
+    formData.append("description", data.description);
+    formData.append("office", userId);
+    formData.append("photo", photo);
+
+    if (data.photos) {
+      for (let i = 0; i < data.photos.length; i++) {
+        formData.append("photos", data.photos[i]);
+      }
+    }
+
+    usePostCarAd.handlePostCarAd(formData);
   };
-
 
   return (
     <>
@@ -233,9 +256,11 @@ const CarSelling = () => {
                 <div>
                   <h1 className="text-[#252B5C] font-bold mb-2">Mileage</h1>
                   <input
-                    {...register("mileage", { required: "Year is required" })}
+                    {...register("mileage", {
+                      required: "Mileage is required",
+                    })}
                     className="pl-2 py-3 rounded-xl bg-[#F5F4F8] text-[12px]"
-                    placeholder="Enter Year"
+                    placeholder="Enter Mileage"
                     type="number"
                   />
                   {errors.mileage && (
@@ -314,7 +339,7 @@ const CarSelling = () => {
                   )}
                 </div>
                 <div>
-                  <h1 className="text-[#252B5C] font-bold mb-2">Price</h1>
+                  <h1 className="text-[#252B5C] font-bold mb-2">Price ($)</h1>
                   <input
                     {...register("price", { required: "Price is required" })}
                     className="px-3 py-3 rounded-xl bg-[#F5F4F8] text-[12px]"
@@ -398,7 +423,7 @@ const CarSelling = () => {
                   className="bg-gradient-to-b from-blue-400 via-blue-500 to-blue-900 text-white text-[14px] font-semibold py-3 px-12 rounded-lg focus:outline-none focus:shadow-outline"
                   type="submit"
                 >
-                  Sell Your Car
+                  {usePostCarAd.loading ? "Posting.." : "Sell Your Car"}
                 </button>
               </div>
               {view360 && (

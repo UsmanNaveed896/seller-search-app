@@ -26,13 +26,13 @@ export const usePostAd = () => {
     try {
       const res = await axios.post(
         "https://searchapi.codematesolution.com/api/v1/postAdvertisements",
-        payLoad,
+        data,
         { headers }
       );
- 
+
       if (res?.status === 200 || res?.status == 201) {
         toast.success("Ad Posted Successfully!");
-
+        setLoading(false);
         let notificationPayload = {
           title: "New Ad",
           description: "New Ad Created!",
@@ -45,9 +45,11 @@ export const usePostAd = () => {
         );
       } else {
         toast.error(res?.data?.message || "An error occurred");
+        setLoading(false);
       }
     } catch (err) {
       console.error("Error occurred:", err);
+      setLoading(false);
       toast.error(
         err?.response?.data?.message || err.message || "An error occurred"
       );
@@ -70,10 +72,10 @@ export const usePostAd = () => {
     try {
       const res = await axios.post(
         "https://searchapi.codematesolution.com/api/v1/carAdvertisements",
-        payLoad,
+        data,
         { headers }
       );
- 
+
       if (res?.status === 200 || res?.status == 201) {
         toast.success("Ad Posted Successfully!");
 
@@ -103,6 +105,6 @@ export const usePostAd = () => {
   return {
     handlePostAd,
     loading,
-    handlePostCarAd
+    handlePostCarAd,
   };
 };
