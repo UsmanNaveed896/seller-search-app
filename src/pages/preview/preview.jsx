@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Img from "../../assets/Vector (4).png";
 import Img1 from "../../assets/a.png";
 import Img2 from "../../assets/Group 25.png";
@@ -10,13 +10,15 @@ import Img7 from "../../assets/Rectangle 22.png";
 import Img8 from "../../assets/Group 48095826.png";
 import Img9 from "../../assets/Group.png";
 import Img10 from "../../assets/Layout.png";
-import LiveStream from "../../components/livestream/livestream";
+// import LiveStream from "../../components/livestream/livestream";
 // import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 // import { Carousel } from 'react-responsive-carousel';
 import MultiCarousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ClientLiveStream from "../../components/livestream/livestreamwebsocket";
+import { useGetStoriesHook } from "../hooks/useGetStoriesHook";
 const Preview = () => {
+  const getStorybyId=useGetStoriesHook()
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -53,11 +55,16 @@ const Preview = () => {
   };
   const shadow =
     "4px 4px 4px 0px rgba(0, 0, 0, 0.25), -1px 4px 6.3px 0px rgba(255, 255, 255, 0.50), 0px -2px 4px 0px rgba(0, 0, 0, 0.25)";
+
+    useEffect(()=>{
+      getStorybyId.handleGetStorybyId()
+    },[])
+    console.log(getStorybyId.story,"story")
   return (
     <>
       <div className="flex justify-center">
         <div className="container max-w-[1000px]">
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             <img src={Img4} alt="abc" />
             <img src={Img5} alt="abc" />
             <img src={Img6} alt="abc" />
@@ -187,7 +194,7 @@ const Preview = () => {
             </div>
             <div className="flex justify-center">
               {/* <img src={Img8} alt="abc" /> */}
-              <LiveStream/>
+              {/* <LiveStream/> */}
               {/* <ClientLiveStream/> */}
             </div>
 

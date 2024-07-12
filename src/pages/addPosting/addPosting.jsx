@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleMaps from "../../components/googleMap/googleMap";
 import { useForm, Controller } from "react-hook-form";
-import { usePostAd } from  "../hooks/usePostAdHook";
+import { usePostAd } from "../hooks/usePostAdHook";
 const AddPosting = () => {
-  const adPostHook=usePostAd();
+  const adPostHook = usePostAd();
   const shadow =
     "4px 4px 4px 0px rgba(0, 0, 0, 0.25), -1px 4px 6.3px 0px rgba(255, 255, 255, 0.50), 0px -2px 4px 0px rgba(0, 0, 0, 0.25)";
   const facilitiesList = [
@@ -29,10 +29,6 @@ const AddPosting = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-   adPostHook.handlePostAd(data)
-    console.log(data, "data");
-  };
   const [show, setShow] = useState(false);
   const [show360, setShow360] = useState(false);
   const [images, setImages] = useState([]);
@@ -48,8 +44,7 @@ const AddPosting = () => {
     balconies: 1,
   });
   const [selectedFacilities, setSelectedFacilities] = useState([]);
-  const [listingType, setListingType] = useState("Rent");
-
+  const [listingType, setListingType] = useState("rent");
   const period = watch("period");
 
   const discountPeriod = watch("discountPeriod");
@@ -102,16 +97,59 @@ const AddPosting = () => {
       alert("You can only upload up to 4 images.");
     }
   };
-  console.log(images, "images");
 
   const handleRemoveImage = (index) => {
     setImages(images.filter((_, i) => i !== index));
   };
 
+  const handleListingTypeChange = (e) => {
+    const value = e.target.value;
+    setListingType(value);
+    setValue("listingType", value); // Update form value
+  };
   const config = {
     autoRotate: -2,
   };
+  let userId = localStorage.getItem("user_id");
+  const photo = "https://example.com/images/picture1.jpg";
+  const onSubmit = async (data) => {
+    const formData = new FormData();
 
+    // Append each field to the FormData object
+    formData.append("title", data.title);
+    formData.append("propertyType", data.propertyType);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("period", data.period);
+    formData.append("discountPrice", data.discountPrice);
+    formData.append("discountPeriod", data.discountPeriod);
+    formData.append("bedrooms", data.bedrooms);
+    formData.append("bathrooms", data.bathrooms);
+    formData.append("balconies", data.balconies);
+    formData.append("area", data.area);
+    formData.append("facilitySelect", data.facilitySelect);
+    formData.append("listingType", data.listingType);
+    formData.append("location", data.location);
+    formData.append("office", userId);
+    formData.append("photo", photo);
+   
+    data.amenities.forEach((amenity, index) => {
+      formData.append(`amenities[${index}]`, amenity);
+    });
+
+    // Append facilities array
+    data.facilities.forEach((facility, index) => {
+      formData.append(`facilities[${index}]`, facility);
+    });
+
+    if (data.photos) {
+      for (let i = 0; i < data.photos.length; i++) {
+        formData.append("photos", data.photos[i]);
+      }
+    }
+
+    adPostHook.handlePostAd(formData);
+  };
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -164,8 +202,8 @@ const AddPosting = () => {
                   <select
                     className="bg-[#F5F4F8] py-3 px-4 rounded-full text-[#252B5C] text-[12px] w-full"
                     value={listingType}
-                    onChange={(e) => setListingType(e.target.value)}
-                    {...register("listingType", { required: true })}
+                    onChange={handleListingTypeChange}
+                    // {...register("listingType", { required: true })}
                   >
                     <option value="rent">Rent</option>
                     <option value="sell">Sell</option>
@@ -204,14 +242,30 @@ const AddPosting = () => {
               </div>
               <div className="column2 px-2 py-2">
                 <h1 className="text-[#252B5C] font-semibold ">Location</h1>
-                <div className="flex gap-2 mt-6 items-center">
+                {/* <div className="flex gap-2 mt-6 items-center">
                   <img src={Img1} alt="abc" />
                   <p className="text-[12px] text-[#53587A]">
                     Jl. Gerungsari, Bulusan, Kec. Tembalang, Kota Semarang, Jawa
                     Tengah 50277
                   </p>
                 </div>
-                <GoogleMaps />
+                <GoogleMaps /> */}
+                <div className="mt-4 rounded-xl flex justify-between px-4 py-3 bg-[#F5F4F8] text-[#252B5C] max-w-[70%]">
+                  <input
+                    type="text"
+                    placeholder="Enter Location"
+                    className="text-[12px] font-bold bg-[#F5F4F8] outline-none border-none"
+                    {...register("location", {
+                      required: "location is required",
+                    })}
+                  />
+                
+                </div>
+                {errors.location && (
+                    <span className="text-red-500">
+                      {errors.location.message}
+                    </span>
+                  )}
                 {/* <img className='mt-6' src={Img2} alt='abc' /> */}
               </div>
               <div className="column3 px-2 py-2">
@@ -414,12 +468,13 @@ const AddPosting = () => {
                         })}
                       />
                       <span className="font-bold">{"$"}</span>
-                      {errors.price && (
+                    
+                    </div>
+                    {errors.price && (
                         <span className="text-red-500">
                           {errors.price.message}
                         </span>
                       )}
-                    </div>
                   </div>
                 )}
                 <div className="">
