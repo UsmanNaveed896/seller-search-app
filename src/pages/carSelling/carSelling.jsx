@@ -53,15 +53,21 @@ const CarSelling = () => {
         updatedUrls[imageKey] = blobUrl;
         return updatedUrls;
       });
-
+ 
+      console.log(selectImage,"select")
       // Get current photos state using watch
       const currentPhotos = watch("photos") || [];
       const updatedPhotos = [...currentPhotos];
       updatedPhotos[imageKey] = blobUrl;
 
-      setValue("photos", updatedPhotos);
+      setValue("photos", selectImage);
     }
   };
+  useEffect(() => {
+    console.log(selectImage, "select");
+    setValue("photos", selectImage);
+  }, [selectImage]);
+
   const handleViewButton = () => {
     if (Object.values(selectImage).every((image) => image !== null)) {
       setView360(true);
@@ -84,15 +90,18 @@ const CarSelling = () => {
     setValue("features", selectedFeatures);
   }, [selectedFeatures, setValue]);
   const removeFeature = (featureToRemove) => {
+
     const updatedFeatures = selectedFeatures.filter(
       (feature) => feature !== featureToRemove
     );
     setSelectedFeatures(updatedFeatures);
     setValue("features", updatedFeatures); // update the value in the form state
   };
+
   let userId = localStorage.getItem("user_id");
   const photo = "https://example.com/images/picture1.jpg";
   const onSubmit = async (data) => {
+    console.log(data,"data")
     const formData = new FormData();
 
     // Append each field to the FormData object

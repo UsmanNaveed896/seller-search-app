@@ -29,7 +29,7 @@ export function CreateStories({ handleOpen, setOpen, open }) {
   const handleContentChange = (event) => {
     setStoryContent(event.target.value);
   };
-
+ console.log(selectedFile,"selected")
   const createStories = () => {
     setLoading(true);
     let token = localStorage.getItem("token");
