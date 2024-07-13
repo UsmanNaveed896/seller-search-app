@@ -25,7 +25,7 @@ export const useCreateVirtualOffice = () => {
       companyAddress: data?.companyAddress,
       governmentID: data?.governmentID,
       idCard: data?.idCard,
-      type: data?.type[0],
+      type: data?.type,
     };
   
     try {
@@ -37,7 +37,7 @@ export const useCreateVirtualOffice = () => {
   
       if (res?.status === 200 || res?.status == 201) {
         toast.success("Virtual Office Created Successfully!");
-  
+        setLoading(false);
         let notificationPayload = {
           title: "Virtual Created",
           description: "Virtual Office Successfully Created!"
@@ -55,6 +55,7 @@ export const useCreateVirtualOffice = () => {
       }
     } catch (err) {
       console.error('Error occurred:', err); 
+      setLoading(false);
       toast.error(
         err?.response?.data?.message || err.message || "An error occurred"
       );
