@@ -133,6 +133,15 @@ const Drawer = () => {
                       </div>
                     </li>
                   </Link>
+                  <Link to="/furnituread">
+                    <li className="cursor-pointer text-[#757575] mb-2">
+                      <div className="flex justify-start items-center gap-4">
+                        <h1 className="text-[#757575] text-[14px] ml-7">
+                          Furniture Ad
+                        </h1>
+                      </div>
+                    </li>
+                  </Link>
                 </>
               )}
 
