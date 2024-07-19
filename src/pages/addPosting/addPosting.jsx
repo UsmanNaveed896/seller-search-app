@@ -25,6 +25,7 @@ const AddPosting = () => {
     handleSubmit,
     watch,
     setValue,
+    reset,
     control,
     formState: { errors },
   } = useForm();
@@ -85,21 +86,31 @@ const AddPosting = () => {
       [e.target.name]: e.target.files[0],
     }));
   };
+
+  const [previewUrls, setPreviewUrls] = useState([]);
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
 
     if (files.length + images.length <= 4) {
-      const blobUrls = files.map((file) => URL.createObjectURL(file));
+      setImages((prevImages) => [...prevImages, ...files]);
 
-      setImages((prevImages) => [...prevImages, ...blobUrls]);
-      setValue("photos", [...images, ...blobUrls]);
+      const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
+      setPreviewUrls((prevPreviewUrls) => [
+        ...prevPreviewUrls,
+        ...newPreviewUrls,
+      ]);
+
+      setValue("photos", [...images, ...files]);
     } else {
       alert("You can only upload up to 4 images.");
     }
   };
 
   const handleRemoveImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setPreviewUrls((prevPreviewUrls) =>
+      prevPreviewUrls.filter((_, i) => i !== index)
+    );
   };
 
   const handleListingTypeChange = (e) => {
@@ -132,7 +143,7 @@ const AddPosting = () => {
     formData.append("location", data.location);
     formData.append("office", userId);
     formData.append("photo", photo);
-   
+
     data.amenities.forEach((amenity, index) => {
       formData.append(`amenities[${index}]`, amenity);
     });
@@ -148,7 +159,10 @@ const AddPosting = () => {
       }
     }
 
-    adPostHook.handlePostAd(formData);
+    adPostHook.handlePostAd(formData).then(() => {
+      reset();
+      setPreviewUrls("");
+    });
   };
   return (
     <>
@@ -259,19 +273,18 @@ const AddPosting = () => {
                       required: "location is required",
                     })}
                   />
-                
                 </div>
                 {errors.location && (
-                    <span className="text-red-500">
-                      {errors.location.message}
-                    </span>
-                  )}
+                  <span className="text-red-500">
+                    {errors.location.message}
+                  </span>
+                )}
                 {/* <img className='mt-6' src={Img2} alt='abc' /> */}
               </div>
               <div className="column3 px-2 py-2">
                 <h1 className="text-[#252B5C] font-semibold">Listing Photos</h1>
                 <div className="flex flex-wrap gap-1 mt-6">
-                  {images.map((blobUrl, index) => (
+                  {previewUrls.map((blobUrl, index) => (
                     <div className="relative" key={index}>
                       <div
                         className="rounded-full absolute right-[4px] bg-[#1e50b2] h-6 w-6 top-[2px] cursor-pointer"
@@ -468,13 +481,12 @@ const AddPosting = () => {
                         })}
                       />
                       <span className="font-bold">{"$"}</span>
-                    
                     </div>
                     {errors.price && (
-                        <span className="text-red-500">
-                          {errors.price.message}
-                        </span>
-                      )}
+                      <span className="text-red-500">
+                        {errors.price.message}
+                      </span>
+                    )}
                   </div>
                 )}
                 <div className="">
@@ -668,7 +680,7 @@ const AddPosting = () => {
                     className="bg-gradient-to-b w-full mt-6 from-blue-500 to-indigo-600 hover:bg-blue-700 text-white text-[14px] font-semibold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
                     type="submit"
                   >
-                    Post Ad
+                    {adPostHook.loading ? "Posting..." : "Post Ad"}
                   </button>
                 </div>
               </div>
